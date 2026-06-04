@@ -38,3 +38,6 @@ class Indexer:
             embedding = self.embeddings,
             persist_directory=self.persist_directory
         )
+    
+indexer = Indexer()
+indexer.build_index("raw_data")
