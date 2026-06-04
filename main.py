@@ -1,6 +1,33 @@
-def main():
-    print("Hello from arag!")
+import gradio as gr
+from indexer import Indexer
+from retriever import Retriever
+from generator import Generator
+import os
+from dotenv import load_dotenv
+from langchain_mistralai.embeddings import MistralAIEmbeddings
+from langchain_openai import ChatOpenAI
 
+load_dotenv()
+
+
+INDEX_PATH = "chroma_db"
+DOCS_PATH = "raw_data"
+
+if not os.path.exists(INDEX_PATH):
+    indexer = Indexer()
+    indexer.build_index(DOCS_PATH)
+
+retriever = Retriever().retriever
+generator = Generator(retriever)
+
+def chat(message, history):
+    return generator.answer(message)
+
+demo = gr.ChatInterface(
+    fn=chat,
+    title= "ARAG - AI RAG Chatbot",
+    description="Ask me anything about the documents in the raw_data folder!"
+)
 
 if __name__ == "__main__":
-    main()
+    demo.launch()
