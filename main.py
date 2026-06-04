@@ -6,6 +6,7 @@ import os
 from dotenv import load_dotenv
 from langchain_mistralai.embeddings import MistralAIEmbeddings
 from langchain_openai import ChatOpenAI
+import shutil
 
 load_dotenv()
 
@@ -13,9 +14,11 @@ load_dotenv()
 INDEX_PATH = "chroma_db"
 DOCS_PATH = "raw_data"
 
-if not os.path.exists(INDEX_PATH):
-    indexer = Indexer()
-    indexer.build_index(DOCS_PATH)
+if os.path.exists(INDEX_PATH):
+    shutil.rmtree(INDEX_PATH)
+    
+indexer = Indexer()
+indexer.build_index(DOCS_PATH)
 
 retriever = Retriever().retriever
 generator = Generator(retriever)
