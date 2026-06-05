@@ -15,8 +15,5 @@ class Retriever:
             search_type="similarity",
             search_kwargs={"k": 3}
         )
-    
-    def search(self, query: str, k: int = 3) -> list[str]:
-        results = self.vector_store.similarity_search(query, k=k)
-        return [doc.page_content for doc in results]
+
     

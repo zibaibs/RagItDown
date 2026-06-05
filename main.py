@@ -28,7 +28,7 @@ def chat(message, history):
 
 demo = gr.ChatInterface(
     fn=chat,
-    title= "ARAG - AI RAG Chatbot",
+    title= "RagItDown - AI RAG Chatbot",
     description="Ask me anything about the documents in the raw_data folder!"
 )
 

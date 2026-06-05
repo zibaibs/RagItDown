@@ -23,7 +23,7 @@ class Indexer:
     def _load_document(self, docs_path: str) -> list[Document]:
         documents = []
         for filename in os.listdir(docs_path):
-            if filename.startswith("."):
+            if filename.startswith("."): 
                 continue
             file_path = os.path.join(docs_path, filename)
             mardown_text = self.md.convert(file_path).text_content
