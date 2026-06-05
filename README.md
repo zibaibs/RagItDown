@@ -4,14 +4,14 @@ Chatbot con interfaccia web che risponde a domande basandosi sui documenti forni
 
 ## Come funziona
 
-1. I documenti in `raw_data/` vengono convertiti in md tramite MarkItDown, splittati per sezione e indicizzati come vettori in ChromaDB
+1. I documenti in `raw_data/` (PDF, DOCX, XLSX, immagini, ecc.) vengono convertiti in Markdown strutturato da **MarkItDown**, che preserva la gerarchia dei titoli (`#`, `##`, `###`). Questa struttura viene usata per splittare il testo in chunk semanticamente coerenti, poi indicizzati come vettori in ChromaDB
 2. Quando l'utente fa una domanda, il sistema cerca i 3 chunk più rilevanti per similarità semantica
 3. I chunk vengono iniettati nel prompt e Mistral genera una risposta basata solo su quel contesto
 
 ## Stack
 
 - **LangChain** — orchestrazione pipeline RAG
-- **MarkItDown** — conversione documenti (PDF, DOCX, ecc.) in Markdown
+- **MarkItDown** — converte documenti in Markdown strutturato (PDF, DOCX, XLSX, immagini, HTML, e altro via `[all]`). La struttura dei titoli prodotta è la base del chunking semantico
 - **MistralAI** — embeddings e generazione (mistral-medium-3.5)
 - **ChromaDB** — vector store locale
 - **Gradio** — interfaccia web chat
@@ -20,7 +20,7 @@ Chatbot con interfaccia web che risponde a domande basandosi sui documenti forni
 
 ```bash
 # Clona il repo
-git clone <url-repo>
+git clone <https://github.com/zibaibs/RagItDown>
 cd ragitdown
 
 # Installa dipendenze (con uv)
@@ -49,3 +49,4 @@ raw_data/      — documenti sorgente (PDF, DOCX, ecc.)
 
 - L'indice viene ricostruito da zero ad ogni avvio
 - Servono le API key di Mistral nel file `.env`
+- Formati supportati: PDF, DOCX, XLSX, PPTX, immagini, HTML, CSV, ZIP (tramite `markitdown[all,pdf]`)
