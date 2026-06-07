@@ -1,6 +1,7 @@
 from markitdown import MarkItDown
 from langchain_core.documents import Document
 from langchain_text_splitters import MarkdownHeaderTextSplitter
+from langchain_text_splitters import RecursiveCharacterTextSplitter 
 from langchain_mistralai.embeddings import MistralAIEmbeddings
 from langchain_chroma import Chroma
 from dotenv import load_dotenv
@@ -20,6 +21,10 @@ class Indexer:
                 ("###", "sottosezione")
             ]
         )
+        self.secondary_splitter = RecursiveCharacterTextSplitter(
+            chunk_size=1000,
+            chunk_overlap=100
+        )
     def _load_document(self, docs_path: str) -> list[Document]:
         documents = []
         for filename in os.listdir(docs_path):
@@ -27,8 +32,10 @@ class Indexer:
                 continue
             file_path = os.path.join(docs_path, filename)
             mardown_text = self.md.convert(file_path).text_content
-            chuncks = self.splitter.split_text(mardown_text)
-            for chunk in chuncks:
+            header_chuncks = self.splitter.split_text(mardown_text)
+            chunks = self.secondary_splitter.split_documents(header_chuncks)
+
+            for chunk in chunks:
                 chunk.metadata["source"] = filename
                 documents.append(chunk)
         return documents
