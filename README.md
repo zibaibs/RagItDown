@@ -20,7 +20,7 @@ Chatbot con interfaccia web che risponde a domande basandosi sui documenti forni
 
 ```bash
 # Clona il repo
-git clone <https://github.com/zibaibs/RagItDown>
+git clone https://github.com/zibaibs/RagItDown
 cd ragitdown
 
 # Installa dipendenze (con uv)
